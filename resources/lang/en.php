@@ -1,7 +1,7 @@
 <?php
 
 /**
- * English translation
+ * English translations
  */
 
 return [

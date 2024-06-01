@@ -15,7 +15,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "files": [
-            "app/Functions.php",
+            "app/Helpers.php",
             "core/Support/Helpers.php"
         ],
         "psr-4": {
@@ -36,7 +36,8 @@
         "symfony/console": "^5.2",
         "dflydev/dot-access-data": "^3.0",
         "symfony/process": "^5.3",
-        "spatie/php-structure-discoverer": "dev-main"
+        "spatie/php-structure-discoverer": "dev-main",
+        "psy/psysh": "@stable"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

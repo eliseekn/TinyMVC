@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright (2019 - 2023) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -104,7 +104,6 @@ class ApplicationTestCase extends TestCase
     public function get(string $uri, array $headers = []): self
     {
         $this->client = Client::get($this->url($uri), $this->setHeaders($headers));
-        save_log($this->getBody());
         return $this;
     }
 
@@ -150,14 +149,24 @@ class ApplicationTestCase extends TestCase
         return $this;
     }
 
+    public function assertStatusEquals(int $expected): void
+    {
+        $this->assertEquals($expected, $this->getStatusCode());
+    }
+
     public function assertStatusOk(): void
     {
         $this->assertStatusEquals(200);
     }
 
-    public function assertStatusEquals(int $expected): void
+    public function assertStatusForbidden(): void
     {
-        $this->assertEquals($expected, $this->getStatusCode());
+        $this->assertStatusEquals(403);
+    }
+
+    public function assertStatusUnauthenticated(): void
+    {
+        $this->assertStatusEquals(401);
     }
 
     public function assertStatusDoesNotEquals(int $expected): void
@@ -173,16 +182,6 @@ class ApplicationTestCase extends TestCase
     public function assertResponseDoesNotHaveJson(array $expected): void
     {
         $this->assertJsonStringNotEqualsJsonString(json_encode($expected), $this->getBody());
-    }
-
-    public function assertRedirected(int $expected = 302): void
-    {
-        $this->assertStatusEquals($expected);
-    }
-
-    public function assertNotRedirected(int $expected = 302): void
-    {
-        $this->assertStatusDoesNotEquals($expected);
     }
 
     public function assertRedirectedToUrl(string $expected): void

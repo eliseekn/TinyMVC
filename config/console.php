@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @copyright (2019 - 2023) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -50,6 +50,7 @@ return [
         new \Core\Console\Tests(),
         new \Core\Console\Logs(),
         new \Core\Console\Routes(),
+        new \Core\Console\Shell(),
     ],
 
     /**

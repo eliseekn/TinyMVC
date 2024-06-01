@@ -1,28 +1,28 @@
 <?php
 
-/**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
- * @license MIT (https://opensource.org/licenses/MIT)
- * @link https://github.com/eliseekn/tinymvc
- */
-
-namespace NAMESPACE;
+namespace Core\Console;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CLASSNAME extends Command
+/**
+ * Start a local server development
+ */
+class Shell extends Command
 {
-    protected static $defaultName = 'COMMANDNAME';
+    protected static $defaultName = 'shell';
 
     protected function configure(): void
     {
-        $this->setDescription('COMMANDDESCPTION');
+        $this->setDescription('Start a PHP interactive shell');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $shell = new \Psy\Shell();
+        $shell->run();
+
         return Command::SUCCESS;
     }
 }
