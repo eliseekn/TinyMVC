@@ -21,7 +21,7 @@ class UsersTable_20210403034738
             ->addString('email')->unique()
             ->addString('password')
             ->addDateTime('email_verified')->nullable()
-            ->addString('role')->default(UserRole::USER->value)
+            ->addString('role')->default(UserRole::USER)
             ->addTimestamps()
             ->run();
     }

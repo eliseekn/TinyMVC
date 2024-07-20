@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => faker()->unique()->email(),
             'password' => hash_pwd('password'),
             'email_verified' => carbon()->toDateTimeString(),
-            'role' => UserRole::USER->value,
+            'role' => UserRole::USER,
             'created_at' => carbon(faker()->dateTimeBetween('-12 months'))->toDateTimeString()
         ];
     }

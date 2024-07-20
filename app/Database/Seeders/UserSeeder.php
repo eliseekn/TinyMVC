@@ -18,7 +18,7 @@ class UserSeeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@tiny.mvc',
-            'role' => UserRole::ADMIN->value
+            'role' => UserRole::ADMIN
         ]);
 
         User::factory(5)->create();

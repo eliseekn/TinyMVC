@@ -23,7 +23,7 @@ class EmailVerificationTest extends ApplicationTestCase
         $user = User::factory()->create(['email_verified' => null]);
         $token = Token::factory()->create([
             'email' => $user->get('email'),
-            'description' => TokenDescription::EMAIL_VERIFICATION_TOKEN->value
+            'description' => TokenDescription::EMAIL_VERIFICATION_TOKEN
         ]);
 
         $client = $this->get('/email/verify?email=' . $user->get('email') . '&token=' . $token->get('value'));

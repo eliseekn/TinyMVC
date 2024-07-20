@@ -26,7 +26,7 @@ class ForgotPasswordController extends Controller
 	public function notify(): void
 	{
         $tokenValue = generate_token(15);
-        $token = Token::findByDescription($this->request->inputs('email'), TokenDescription::PASSWORD_RESET_TOKEN->value);
+        $token = Token::findByDescription($this->request->inputs('email'), TokenDescription::PASSWORD_RESET_TOKEN);
 
         if ($token) {
             $token->update(['value' => $tokenValue]);
@@ -35,7 +35,7 @@ class ForgotPasswordController extends Controller
                 'email'=> $this->request->inputs('email'),
                 'value' => $tokenValue,
                 'expires_at' => carbon()->addHour()->toDateTimeString(),
-                'description' => TokenDescription::PASSWORD_RESET_TOKEN->value
+                'description' => TokenDescription::PASSWORD_RESET_TOKEN
             ]);
         }
 
@@ -55,7 +55,7 @@ class ForgotPasswordController extends Controller
             $this->response(__('bad_request'), 400);
         }
 
-        $token = Token::findByDescription($this->request->queries('email'), TokenDescription::PASSWORD_RESET_TOKEN->value);
+        $token = Token::findByDescription($this->request->queries('email'), TokenDescription::PASSWORD_RESET_TOKEN);
 
         if (!$token || $token->get('value') !== $this->request->queries('token')) {
 			$this->response(__('invalid_password_reset_link'), 400);

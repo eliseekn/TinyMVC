@@ -26,7 +26,7 @@ class EmailVerificationController extends Controller
    public function notify(): void
     {
         $tokenValue = generate_token(15);
-        $token = Token::findByDescription($this->request->queries('email'), TokenDescription::EMAIL_VERIFICATION_TOKEN->value);
+        $token = Token::findByDescription($this->request->queries('email'), TokenDescription::EMAIL_VERIFICATION_TOKEN);
 
         if ($token) {
             $token->update(['value' => $tokenValue]);
@@ -35,7 +35,7 @@ class EmailVerificationController extends Controller
                 'email'=> $this->request->queries('email'),
                 'value' => $tokenValue,
                 'expires_at' => carbon()->addDay()->toDateTimeString(),
-                'description' => TokenDescription::EMAIL_VERIFICATION_TOKEN->value
+                'description' => TokenDescription::EMAIL_VERIFICATION_TOKEN
             ]);
         }
 
@@ -55,7 +55,7 @@ class EmailVerificationController extends Controller
             $this->response(__('bad_request'), 400);
         }
 
-        $token = Token::findByDescription($this->request->queries('email'), TokenDescription::EMAIL_VERIFICATION_TOKEN->value);
+        $token = Token::findByDescription($this->request->queries('email'), TokenDescription::EMAIL_VERIFICATION_TOKEN);
 
         if (!$token || $token->get('value') !== $this->request->queries('token')) {
 			$this->response(__('invalid_password_reset_link'), 400);

@@ -24,7 +24,7 @@ class PasswordForgotTest extends ApplicationTestCase
         $user = User::factory()->create();
         $token = Token::factory()->create([
             'email' => $user->get('email'),
-            'description' => TokenDescription::PASSWORD_RESET_TOKEN->value
+            'description' => TokenDescription::PASSWORD_RESET_TOKEN
         ]);
 
         $this->get('/password/reset?email=' . $user->get('email') . '&token=' . $token->get('value'));
