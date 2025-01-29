@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -12,10 +14,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Create new listener
+ * Create new listener.
  */
 class Listener extends Command
 {
@@ -24,7 +25,7 @@ class Listener extends Command
     protected function configure(): void
     {
         $this->setDescription('Create new listener');
-        $this->addArgument('listener', InputArgument::REQUIRED|InputArgument::IS_ARRAY, 'The name of event listener table (separated by space if many)');
+        $this->addArgument('listener', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The name of event listener table (separated by space if many)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -34,7 +35,7 @@ class Listener extends Command
         foreach ($listeners as $listener) {
             list(, $class) = Maker::generateClass(base_name: $listener, singular: true, force_singlular: true);
 
-            if (!Maker::createListener($listener)) {
+            if (! Maker::createListener($listener)) {
                 $output->writeln('<error>[ERROR] Failed to create listener "' . Maker::fixPlural($class . 'EventListener', true) . '"</error>');
             } else {
                 $output->writeln('<info>[ERROR] Listener "' . Maker::fixPlural($class . 'EventListener', true) . '" has been created</info>');

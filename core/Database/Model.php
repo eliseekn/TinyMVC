@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -13,7 +15,7 @@ use Core\Support\Metrics\Metrics;
 use PDOStatement;
 
 /**
- * Manage database models
+ * Manage database models.
  */
 class Model
 {
@@ -39,12 +41,12 @@ class Model
         return $this->repository->selectAll('*');
     }
 
-    public function first(): Model|false
+    public function first(): self|false
     {
         return $this->select('*')->first();
     }
 
-    public function last(): Model|false
+    public function last(): self|false
     {
         return $this->select('*')->last();
     }
@@ -52,14 +54,14 @@ class Model
     public function take(int $count, ?Closure $subQuery = null): array|false
     {
         return $this->select('*')
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->take($count);
     }
 
     public function oldest(string $column = 'created_at', ?Closure $subQuery = null): array|false
     {
         return $this->select('*')
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->oldest($column)
             ->getAll();
     }
@@ -67,7 +69,7 @@ class Model
     public function newest(string $column = 'created_at', ?Closure $subQuery = null): array|false
     {
         return $this->select('*')
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->newest($column)
             ->getAll();
     }
@@ -86,50 +88,50 @@ class Model
     {
         $data = $this->repository
             ->count($column)
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->get();
 
-        return !$data ? false : $data->get('value');
+        return ! $data ? false : $data->get('value');
     }
 
     public function sum(string $column, ?Closure $subQuery = null): mixed
     {
         $data = $this->repository
             ->sum($column)
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->get();
 
-        return !$data ? false : $data->get('value');
+        return ! $data ? false : $data->get('value');
     }
 
     public function average(string $column, ?Closure $subQuery = null): mixed
     {
         $data = $this->repository
             ->average($column)
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->get();
 
-        return !$data ? false : $data->get('value');
+        return ! $data ? false : $data->get('value');
     }
 
     public function max(string $column, ?Closure $subQuery = null): mixed
     {
         $data = $this->repository
             ->max($column)
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->get();
 
-        return !$data ? false : $data->get('value');
+        return ! $data ? false : $data->get('value');
     }
 
     public function min(string $column, ?Closure $subQuery = null): mixed
     {
         $data = $this->repository
             ->min($column)
-            ->subQueryWhen(!is_null($subQuery), $subQuery)
+            ->subQueryWhen(! is_null($subQuery), $subQuery)
             ->get();
 
-        return !$data ? false : $data->get('value');
+        return ! $data ? false : $data->get('value');
     }
 
     public function metrics(): Metrics
@@ -140,6 +142,7 @@ class Model
     public function create(array $data): self|false
     {
         $id = $this->repository->insertGetId($data);
+
         return is_null($id) ? false : $this->find($id);
     }
 
@@ -150,11 +153,11 @@ class Model
 
     public function getId(): int
     {
-        return (int) $this->attributes['id'];
+        return (int) $this->get('id');
     }
-    
+
     /**
-     * Get relationship of the model
+     * Get relationship of the model.
      */
     public function has(string $table, ?string $column = null): Repository
     {
@@ -166,7 +169,7 @@ class Model
     }
 
     /**
-     * Get relationship belongs to the model
+     * Get relationship belongs to the model.
      */
     public function belongsTo(string $table, ?string $column = null): Repository
     {
@@ -186,9 +189,9 @@ class Model
         return $this;
     }
 
-    public function get(string|array $attributes = []): int|string|array
+    public function get(string|array $attributes = null): int|string|array
     {
-        if (empty($attributes)) {
+        if (is_null($attributes)) {
             return $this->attributes;
         }
 
@@ -198,7 +201,7 @@ class Model
 
         return array_intersect_key($this->attributes, array_flip($attributes));
     }
-    
+
     public function update(array $data): bool
     {
         return $this->repository->updateIfExists($this->getId(), $data);
@@ -209,9 +212,9 @@ class Model
         return $this->repository->deleteIfExists($this->getId());
     }
 
-    public function save(): Model|false
+    public function save(): self|false
     {
-        if (empty($this->attributes['id'])) {
+        if (empty($this->getId())) {
             return $this->create($this->attributes);
         }
 
@@ -238,7 +241,7 @@ class Model
             $table = rtrim($table, 'ies');
             $table .= 'y';
         }
-    
+
         if ($table[-1] === 's') {
             $table = rtrim($table, 's');
         }
@@ -246,4 +249,3 @@ class Model
         return $table . '_id';
     }
 }
-

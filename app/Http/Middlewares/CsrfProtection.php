@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
 namespace App\Http\Middlewares;
 
-use Core\Http\Request;
 use Core\Exceptions\InvalidCsrfTokenException;
 use Core\Exceptions\MissingCsrfTokenException;
+use Core\Http\Request;
+use Exception;
 
 /**
- * CSRF token validator
+ * CSRF token validator.
  */
 class CsrfProtection
-{    
+{
     /**
      * @throws Exception
      */
@@ -26,11 +29,11 @@ class CsrfProtection
             return;
         }
 
-        if (!$request->filled('_csrf_token')) {
+        if (! $request->filled('_csrf_token')) {
             throw new MissingCsrfTokenException();
         }
 
-        if (!valid_csrf_token($request->inputs('_csrf_token'))) {
+        if (! valid_csrf_token($request->inputs('_csrf_token'))) {
             throw new InvalidCsrfTokenException();
         }
     }

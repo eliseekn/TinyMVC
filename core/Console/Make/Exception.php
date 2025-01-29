@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create new custom exception 
+ * Create new custom exception.
  */
 class Exception extends Command
 {
@@ -35,7 +37,7 @@ class Exception extends Command
 
         list(, $class) = Maker::generateClass($exception);
 
-        if (!Maker::createException($exception, $message)) {
+        if (! Maker::createException($exception, $message)) {
             $output->writeln('<error>[ERROR] Failed to create exception "' . $class . '"</error>');
         } else {
             $output->writeln('<info>[INFO] Exception "' . $class . '" has been created</info>');

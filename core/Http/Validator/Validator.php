@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
 namespace Core\Http\Validator;
 
-use GUMP;
 use Core\Http\Response;
+use GUMP;
 use Spatie\StructureDiscoverer\Discover;
 
 /**
- * Request fields validator
+ * Request fields validator.
  */
 class Validator implements ValidatorInterface
 {
@@ -25,7 +27,7 @@ class Validator implements ValidatorInterface
     ) {
         $rules = Discover::in(config('storage.rules'))->classes()->get();
 
-        if (!empty($rules)) {
+        if (! empty($rules)) {
             foreach ($rules as $rule) {
                 $rule = new $rule();
 
@@ -45,14 +47,14 @@ class Validator implements ValidatorInterface
         $this->messages = empty($this->messages) ? $this->messages() : $this->messages;
         $this->errors = GUMP::is_valid($this->inputs, $this->rules, $this->messages);
 
-        if ($this->fails() && !is_null($response)) {
+        if ($this->failed() && ! is_null($response)) {
             $response
                 ->back()
-                ->withErrors($this->errors())
+                ->withErrors(['dafds'])
                 ->withInputs($this->inputs)
-                ->send();
+                ->send(400);
         }
-        
+
         return $this;
     }
 
@@ -60,20 +62,20 @@ class Validator implements ValidatorInterface
     {
         return [];
     }
-    
+
     public function messages(): array
     {
         return [];
     }
 
-    public function fails(): bool
+    public function failed(): bool
     {
         return is_array($this->errors);
     }
 
     /**
-     * Generate errors messages array according to input field name
-     * 
+     * Generate errors messages array according to input field name.
+     *
      * To work properly on custom errors messages you must explicitly define the
      * input field name as {field} in your error message string
      */
@@ -81,7 +83,7 @@ class Validator implements ValidatorInterface
     {
         $errors = [];
 
-        if (!$this->fails()) {
+        if (! $this->failed()) {
             return $errors;
         }
 

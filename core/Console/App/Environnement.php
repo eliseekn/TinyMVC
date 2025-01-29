@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Define application environnement
+ * Define application environnement.
  */
 class Environnement extends Command
 {
@@ -29,6 +31,12 @@ class Environnement extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (! in_array($input->getArgument('name'), ['test', 'prod', 'local'])) {
+            $output->writeln('<error>[ERROR] Invalid application environnement "' . $input->getArgument('name') . '"</error>');
+
+            return Command::FAILURE;
+        }
+
         Config::loadEnv();
 
         Config::saveEnv([
@@ -47,10 +55,13 @@ class Environnement extends Command
             'MAILER_PORT' => env('MAILER_PORT') . PHP_EOL,
             'MAILER_USERNAME' => env('MAILER_USERNAME') . PHP_EOL,
             'MAILER_PASSWORD' => env('MAILER_PASSWORD') . PHP_EOL,
-            'ENCRYPTION_KEY' => env('ENCRYPTION_KEY')
+            'MAILER_SENDER_NAME' => env('MAILER_SENDER_NAME') . PHP_EOL,
+            'MAILER_SENDER_MAIL' => env('MAILER_SENDER_MAIL') . PHP_EOL,
+            'ENCRYPTION_KEY' => env('ENCRYPTION_KEY'),
         ]);
 
-        $output->writeln('<info>[INFO] Application environnement has been defined</info>');
+        $output->writeln('<info>[INFO] Application environnement has been defined to "' . $input->getArgument('name') . '"</info>');
+
         return Command::SUCCESS;
     }
 }

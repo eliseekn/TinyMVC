@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create new mail template 
+ * Create new mail template.
  */
 class Mail extends Command
 {
@@ -23,7 +25,7 @@ class Mail extends Command
     protected function configure(): void
     {
         $this->setDescription('Create new mail template');
-        $this->addArgument('mail', InputArgument::REQUIRED|InputArgument::IS_ARRAY, 'The name of mail template (separated by space if many)');
+        $this->addArgument('mail', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The name of mail template (separated by space if many)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -33,7 +35,7 @@ class Mail extends Command
         foreach ($mails as $mail) {
             list(, $class) = Maker::generateClass($mail, 'mail');
 
-            if (!Maker::createMail($mail)) {
+            if (! Maker::createMail($mail)) {
                 $output->writeln('<error>[ERROR] Failed to create mail template "' . $class . '"</error>');
             } else {
                 $output->writeln('<info>[INFO] Mail template "' . $class . '" has been created</info>');

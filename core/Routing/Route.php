@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -10,25 +12,28 @@ namespace Core\Routing;
 
 use Closure;
 use Core\Exceptions\RoutesPathsNotDefinedException;
-use Core\Support\Storage;
 use Core\Http\Response;
+use Core\Support\Storage;
 use ReflectionClass;
 use ReflectionMethod;
 use Spatie\StructureDiscoverer\Discover;
 
 /**
- * Manage routes
+ * Manage routes.
  */
 class Route
 {
     protected static string $route;
+
     protected static array $tmp_routes = [];
+
     public static array $routes = [];
 
     private static function add(string $route, Closure|array|string $handler): self
     {
         static::$route = self::format($route);
         static::$tmp_routes[static::$route] = ['handler' => $handler];
+
         return new self();
     }
 
@@ -41,44 +46,56 @@ class Route
     {
         return self::add('POST ' . $uri, $handler);
     }
-    
+
     public static function delete(string $uri, Closure|array|string $handler): self
     {
         return self::add('DELETE ' . $uri, $handler);
     }
-    
+
     public static function options(string $uri, Closure|array|string $handler): self
     {
         return self::add('OPTIONS ' . $uri, $handler);
     }
-    
+
     public static function patch(string $uri, Closure|array|string $handler): self
     {
         return self::add('PATCH ' . $uri, $handler);
     }
-    
+
     public static function put(string $uri, Closure|array|string $handler): self
     {
         return self::add('PUT ' . $uri, $handler);
     }
-    
+
     public static function any(string $uri, Closure|array|string $handler): self
     {
         return self::add('GET|POST|DELETE|PUT|OPTIONS|PATCH ' . $uri, $handler);
     }
-    
+
     public static function all(string $name, string $controller, array $excepts = []): self
     {
-        return self::group(function() use ($name, $excepts) {
-            if (!in_array('index', $excepts)) self::get('/' . $name, 'index')->name('index');
-            if (!in_array('store', $excepts)) self::post('/' . $name, 'store')->name('store');
-            if (!in_array('update', $excepts)) self::match('PATCH|PUT', '/' . $name . '/{id:int}', 'update')->name('update');
-            if (!in_array('show', $excepts)) self::get('/' . $name . '/{id:int}', 'show')->name('show');
-            if (!in_array('edit', $excepts)) self::get('/' . $name . '/{id:int}/edit', 'edit')->name('edit');
-            if (!in_array('delete', $excepts)) self::delete('/' . $name . '/{id:int}', 'delete')->name('delete');
+        return self::group(function () use ($name, $excepts) {
+            if (! in_array('index', $excepts)) {
+                self::get('/' . $name, 'index')->name('index');
+            }
+            if (! in_array('store', $excepts)) {
+                self::post('/' . $name, 'store')->name('store');
+            }
+            if (! in_array('update', $excepts)) {
+                self::match('PATCH|PUT', '/' . $name . '/{id:int}', 'update')->name('update');
+            }
+            if (! in_array('show', $excepts)) {
+                self::get('/' . $name . '/{id:int}', 'show')->name('show');
+            }
+            if (! in_array('edit', $excepts)) {
+                self::get('/' . $name . '/{id:int}/edit', 'edit')->name('edit');
+            }
+            if (! in_array('delete', $excepts)) {
+                self::delete('/' . $name . '/{id:int}', 'delete')->name('delete');
+            }
         })->byController($controller)->byName($name);
     }
-    
+
     public static function match(string $methods, string $uri, Closure|array|string $handler): self
     {
         return self::add($methods . ' ' . $uri, $handler);
@@ -94,22 +111,25 @@ class Route
     public function name(string $name): self
     {
         self::$tmp_routes[self::$route]['name'] = $name;
+
         return $this;
     }
 
     public static function group($callback): self
     {
         call_user_func($callback);
+
         return new static();
     }
-    
+
     public function middleware(array|string $middlewares): self
     {
         $middlewares = parse_array($middlewares);
         self::$tmp_routes[self::$route]['middlewares'] = $middlewares;
+
         return $this;
     }
-    
+
     public function byMiddleware(array|string $middlewares): self
     {
         $middlewares = parse_array($middlewares);
@@ -124,7 +144,7 @@ class Route
 
         return $this;
     }
-    
+
     public function byPrefix(string $prefix): self
     {
         if ($prefix[-1] === '/') {
@@ -140,7 +160,7 @@ class Route
 
         return $this;
     }
-    
+
     public function byName(string $name): self
     {
         foreach (self::$tmp_routes as $route => $options) {
@@ -166,7 +186,7 @@ class Route
 
         return $this;
     }
-    
+
     public function register(): void
     {
         if (empty(self::$tmp_routes)) {
@@ -176,7 +196,7 @@ class Route
         self::$routes += self::$tmp_routes;
         self::$tmp_routes = [];
     }
-    
+
     private static function format(string $route): string
     {
         list($method, $uri) = explode(' ', $route, 2);
@@ -254,9 +274,9 @@ class Route
             throw new RoutesPathsNotDefinedException();
         }
 
-        if (!empty(config('routes.paths'))) {
+        if (! empty(config('routes.paths'))) {
             $paths = array_map(function ($path) {
-                $path = $path === '/'
+                $path = $path === DIRECTORY_SEPARATOR
                     ? config('storage.routes')
                     : Storage::path(config('storage.routes'))->addPath($path)->getPath();
 

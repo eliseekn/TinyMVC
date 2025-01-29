@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -12,7 +14,7 @@ use Dflydev\DotAccessData\Data;
 use Exception;
 
 /**
- * Manage configurations
+ * Manage configurations.
  */
 class Config
 {
@@ -34,15 +36,19 @@ class Config
 
     public static function loadEnv(): void
     {
-        if (!Storage::path()->isFile('.env')) {
+        if (! Storage::path()->isFile('.env')) {
             throw new Exception('Copy ".env.example" file to ".env" then edit it or run "php console app:setup" console command to setup application');
         }
 
         $lines = file(Storage::path()->file('.env'), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         foreach ($lines as $line) {
-            if (strpos(trim($line), '#')) continue;
-            if (trim($line) === '') continue;
+            if (strpos(trim($line), '#')) {
+                continue;
+            }
+            if (trim($line) === '') {
+                continue;
+            }
 
             list($key, $value) = explode('=', trim($line), 2);
             putenv("$key=$value");
@@ -52,9 +58,10 @@ class Config
     public static function readEnv(string $key, $default = null): mixed
     {
         $data = getenv($key, true);
+
         return $data === false ? $default : $data;
     }
-    
+
     public static function readFile(string $config, string $path, $default = null): mixed
     {
         $config = require $config;
@@ -69,7 +76,7 @@ class Config
         $translated = $translations[$expr];
 
         foreach ($data as $key => $value) {
-            $translated = str_replace('{' . $key  . '}', $value, $translated);
+            $translated = str_replace('{' . $key . '}', $value, $translated);
         }
 
         return $translated;

@@ -1,4 +1,0 @@
-{
-    "$schema": "/home/eliseekn/.local/share/nvim/mason/packages/phpactor/phpactor.schema.json",
-    "prophecy.enabled": false
-}

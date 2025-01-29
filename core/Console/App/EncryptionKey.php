@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Generate application encryption key
+ * Generate application encryption key.
  */
 class EncryptionKey extends Command
 {
@@ -45,10 +47,13 @@ class EncryptionKey extends Command
             'MAILER_PORT' => env('MAILER_PORT') . PHP_EOL,
             'MAILER_USERNAME' => env('MAILER_USERNAME') . PHP_EOL,
             'MAILER_PASSWORD' => env('MAILER_PASSWORD') . PHP_EOL,
-            'ENCRYPTION_KEY' => generate_token()
+            'MAILER_SENDER_NAME' => env('MAILER_SENDER_NAME') . PHP_EOL,
+            'MAILER_SENDER_MAIL' => env('MAILER_SENDER_MAIL') . PHP_EOL,
+            'ENCRYPTION_KEY' => generate_token(),
         ]);
 
         $output->writeln('<info>[INFO] Application encryption key has been generated</info>');
+
         return Command::SUCCESS;
     }
 }

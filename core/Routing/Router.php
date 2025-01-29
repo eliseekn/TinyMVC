@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -9,60 +11,60 @@
 namespace Core\Routing;
 
 use Closure;
+use Core\Exceptions\ControllerNotFoundException;
+use Core\Exceptions\InvalidRouteHandlerException;
+use Core\Exceptions\MiddlewareNotFoundException;
+use Core\Exceptions\RouteHandlerNotDefinedException;
+use Core\Exceptions\RoutesNotDefinedException;
 use Core\Http\Request;
 use Core\Http\Response;
 use Core\Support\DependencyInjection;
-use Core\Exceptions\RoutesNotDefinedException;
-use Core\Exceptions\ControllerNotFoundException;
-use Core\Exceptions\MiddlewareNotFoundException;
-use Core\Exceptions\InvalidRouteHandlerException;
-use Core\Exceptions\RouteHandlerNotDefinedException;
 
 /**
- * Routing system
+ * Routing system.
  */
 class Router
 {
     protected static function match(Request $request, string $method, string $route, &$params): bool
     {
         if (
-            !preg_match('/' . strtoupper($method) . '/', strtoupper($request->method())) ||
-            !preg_match('#^' . $route . '$#', $request->uri(), $params)
+            ! preg_match('/' . strtoupper($method) . '/', strtoupper($request->method())) ||
+            ! preg_match('#^' . $route . '$#', $request->uri(), $params)
         ) {
             return false;
         }
 
         array_shift($params);
-            
+
         return true;
     }
-    
+
     protected static function executeMiddlewares(array $middlewares): void
     {
         foreach ($middlewares as $middleware) {
             $middleware = config('middlewares.' . $middleware);
 
-            if (!class_exists($middleware) || !method_exists($middleware, 'handle')) {
+            if (! class_exists($middleware) || ! method_exists($middleware, 'handle')) {
                 throw new MiddlewareNotFoundException($middleware);
             }
 
             (new DependencyInjection())->resolve($middleware, 'handle');
         }
     }
-    
+
     protected static function executeHandler(Closure|array|string $handler, array $params): mixed
     {
         if ($handler instanceof Closure) {
             return (new DependencyInjection())->resolveClosure($handler, $params);
-        } 
-        
+        }
+
         if (is_array($handler)) {
             list($controller, $action) = $handler;
 
             if (class_exists($controller) && method_exists($controller, $action)) {
                 return (new DependencyInjection())->resolve($controller, $action, $params);
             }
-            
+
             throw new ControllerNotFoundException("$controller/$action");
         }
 
@@ -72,13 +74,16 @@ class Router
             }
 
             throw new ControllerNotFoundException($handler);
-        }
+        } else {
 
-        throw new InvalidRouteHandlerException();
+            throw new InvalidRouteHandlerException();
+        }
     }
-    
-    public static function dispatch(Request $request, Response $response): void
-    {   
+
+    public static function dispatch(): void
+    {
+        $request = new Request();
+        $response = new Response();
         $routes = Route::getRoutes();
 
         if (empty($routes)) {
@@ -91,11 +96,11 @@ class Router
             $request->method($request_method);
 
             if (self::match($request, $method, $route, $params)) {
-                if (!isset($options['handler'])) {
+                if (! isset($options['handler'])) {
                     throw new RouteHandlerNotDefinedException($route);
                 }
 
-                if (!$request->uriContains('api')) {
+                if (! $request->uriContains('api')) {
                     session()->push('history', [$request->uri()]);
                 }
 

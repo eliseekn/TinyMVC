@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
-/**
+/*
  * Storage configuration
  */
 
@@ -34,5 +36,5 @@ return [
     'console' => absolute_path('app.Console'),
     'sqlite' => absolute_path('storage.sqlite'),
     'useCases' => absolute_path('app.Http.UseCases'),
-    'events' => absolute_path('app.Events')
+    'events' => absolute_path('app.Events'),
 ];

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -18,24 +20,36 @@ use Core\Support\Metrics\Enums\Period;
 use DateTime;
 
 /**
- * Metrics and trends generator
+ * Metrics and trends generator.
  */
 class Metrics
 {
     protected string $column = 'id';
+
     protected string|array $period;
+
     protected string $aggregate;
+
     protected string $dateColumn;
+
     protected ?string $labelColumn = null;
+
     protected string $driver;
+
     protected QueryBuilder $qb;
+
     protected int $interval = 0;
+
     protected ?Closure $subQuery = null;
+
     protected int $year;
+
     protected int $month;
+
     protected int $day;
+
     protected int $week;
-    
+
     public function __construct(protected string $table)
     {
         $this->driver = config('app.env') === 'test'
@@ -60,6 +74,7 @@ class Metrics
     public function subQuery(Closure $subQuery): self
     {
         $this->subQuery = $subQuery;
+
         return $this;
     }
 
@@ -67,12 +82,13 @@ class Metrics
     {
         $period = strtolower($period);
 
-        if (!in_array($period, Period::values())) {
+        if (! in_array($period, Period::values())) {
             throw new InvalidPeriodException();
         }
 
         $this->period = $period;
         $this->interval = $interval;
+
         return $this;
     }
 
@@ -100,30 +116,35 @@ class Metrics
     {
         $this->checkDateFormat([$start, $end]);
         $this->period = [$start, $end];
+
         return $this;
     }
 
     public function forDay(int $day): self
     {
         $this->day = $day;
+
         return $this;
     }
 
     public function forWeek(int $week): self
     {
         $this->week = $week;
+
         return $this;
     }
 
     public function forMonth(int $month): self
     {
         $this->month = $month;
+
         return $this;
     }
 
     public function forYear(int $year): self
     {
         $this->year = $year;
+
         return $this;
     }
 
@@ -131,12 +152,13 @@ class Metrics
     {
         $aggregate = strtolower($aggregate);
 
-        if (!in_array($aggregate, Aggregate::values())) {
+        if (! in_array($aggregate, Aggregate::values())) {
             throw new InvalidAggregateException();
         }
 
         $this->aggregate = $aggregate;
         $this->column = $this->table . '.' . $column;
+
         return $this;
     }
 
@@ -168,12 +190,14 @@ class Metrics
     public function dateColumn(string $column): self
     {
         $this->dateColumn = $this->table . '.' . $column;
+
         return $this;
     }
 
     public function labelColumn(string $column): self
     {
         $this->labelColumn = $this->table . '.' . $column;
+
         return $this;
     }
 
@@ -194,7 +218,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->and($this->formatPeriod(Period::TODAY->value), '>=', carbon()->subDays($this->interval)->day);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->groupBy('label')
                 ->orderBy('label', 'asc')
                 ->fetchAll(),
@@ -209,7 +233,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->and($this->formatPeriod(Period::WEEK->value), '>=', carbon()->subWeeks($this->interval)->week);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->groupBy('label')
                 ->orderBy('label', 'asc')
                 ->fetchAll(),
@@ -223,7 +247,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->where($this->formatPeriod(Period::MONTH->value), '>=', carbon()->subMonths($this->interval)->month);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->groupBy('label')
                 ->orderBy('label', 'asc')
                 ->fetchAll(),
@@ -236,7 +260,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->where($this->formatPeriod(Period::YEAR->value), '>=', carbon()->subYears($this->interval)->year);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->groupBy('label')
                 ->orderBy('label', 'asc')
                 ->fetchAll(),
@@ -258,7 +282,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->and($this->formatPeriod(Period::TODAY->value), '>=', carbon()->subDays($this->interval)->day);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->fetch(),
 
             Period::WEEK->value => $this->qb
@@ -271,7 +295,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->and($this->formatPeriod(Period::WEEK->value), '>=', carbon()->subWeeks($this->interval)->week);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->fetch(),
 
             Period::MONTH->value => $this->qb
@@ -283,7 +307,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->where($this->formatPeriod(Period::MONTH->value), '>=', carbon()->subMonths($this->interval)->month);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->fetch(),
 
             Period::YEAR->value => $this->qb
@@ -294,7 +318,7 @@ class Metrics
                 ->subQueryWhen($this->interval > 1, function (QueryBuilder $qb) {
                     $qb->where($this->formatPeriod(Period::YEAR->value), '>=', carbon()->subYears($this->interval)->year);
                 })
-                ->subQueryWhen(!is_null($this->subQuery), $this->subQuery)
+                ->subQueryWhen(! is_null($this->subQuery), $this->subQuery)
                 ->fetch(),
 
             default => [],
@@ -308,7 +332,7 @@ class Metrics
 
     protected function asLabel(string $label): string
     {
-        return $this->formatPeriod($label) . " as label";
+        return $this->formatPeriod($label) . ' as label';
     }
 
     protected function formatPeriod(string $period): string
@@ -324,7 +348,7 @@ class Metrics
 
     protected function formatDate(array $data): array
     {
-        return array_map(function ($data)  {
+        return array_map(function ($data) {
             if ($this->period === Period::MONTH->value) {
                 $data->label = carbon($this->year . '-' . $data->label)->locale(config('app.lang'))->monthName;
             } elseif ($this->period === Period::DAY->value) {
@@ -342,16 +366,17 @@ class Metrics
     }
 
     /**
-     * Generate metrics data
+     * Generate metrics data.
      */
     public function metrics(): mixed
     {
         $metricsData = $this->metricsData();
+
         return is_null($metricsData) ? 0 : $metricsData->data;
     }
 
     /**
-     * Generate trends data for charts
+     * Generate trends data for charts.
      */
     public function trends(): array
     {
@@ -374,7 +399,7 @@ class Metrics
         foreach ($dates as $date) {
             $d = DateTime::createFromFormat('Y-m-d', $date);
 
-            if (!$d || $d->format('Y-m-d') !== $date) {
+            if (! $d || $d->format('Y-m-d') !== $date) {
                 throw new InvalidDateFormatException();
             }
         }

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -22,24 +24,27 @@ class PasswordForgotTest extends ApplicationTestCase
     public function test_can_reset_password(): void
     {
         $user = User::factory()->create();
+
         $token = Token::factory()->create([
             'email' => $user->get('email'),
-            'description' => TokenDescription::PASSWORD_RESET_TOKEN
+            'description' => TokenDescription::PASSWORD_RESET,
         ]);
 
-        $this->get('/password/reset?email=' . $user->get('email') . '&token=' . $token->get('value'));
-        $this->assertDatabaseDoesNotHave('tokens', $token->get());
+        $this
+            ->get('/password/reset?email=' . $user->get('email') . '&token=' . $token->get('value'))
+            ->assertDatabaseDoesNotHave('tokens', $token->get());
     }
 
     public function test_can_update_password(): void
     {
         $user = User::factory()->create();
-        $client = $this->post('/password/update', [
-            'email' => $user->get('email'),
-            'password' => 'new_password'
-        ]);
 
-        $client->assertRedirectedToUrl(url('login'));
-        $this->assertTrue(Encryption::check('new_password', hash_pwd('new_password')));
+        $this
+            ->post('/password/update', [
+                'email' => $user->get('email'),
+                'password' => 'new_password',
+            ])
+            ->assertRedirectedToUrl(url('login'))
+            ->assertTrue(Encryption::check('new_password', hash_pwd('new_password')));
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -9,14 +11,14 @@
 namespace App\Http\Middlewares;
 
 use Core\Http\Request;
-use Core\Support\Auth;
 use Core\Http\Response;
+use Core\Support\Auth;
 
 /**
- * Authenticate user by http
+ * Authenticate user by http.
  */
 class HttpAuth
-{    
+{
     public function handle(Request $request, Response $response): void
     {
         if (empty($request->getHttpAuth())) {
@@ -32,7 +34,7 @@ class HttpAuth
         $credentials = base64_decode($credentials);
         list($email, $password) = explode(':', $credentials);
 
-        if (!Auth::checkCredentials($email, $password, $user)) {
+        if (! Auth::checkCredentials($email, $password, $user)) {
             $response->json([__('invalid_credentials')])->send(401);
         }
     }

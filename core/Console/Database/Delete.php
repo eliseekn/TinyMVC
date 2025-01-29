@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Delete database 
+ * Delete database.
  */
 class Delete extends Command
 {
@@ -35,13 +37,13 @@ class Delete extends Command
         if (empty($databases)) {
             $db = config('app.env') !== 'test'
                 ? config('database.name')
-                : config('database.name') . config('tests.database.suffix') ;
+                : config('database.name') . config('tests.database.suffix');
 
             $databases = [$db];
         }
 
         foreach ($databases as $database) {
-            if (!$connection->schemaExists($database)) {
+            if (! $connection->schemaExists($database)) {
                 $output->writeln('<comment>[WARNING] Database "' . $database . '" does not exists</comment>');
             } else {
                 $connection->deleteSchema($database);

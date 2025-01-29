@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Run seeders
+ * Run seeders.
  */
 class Seed extends Command
 {
@@ -24,7 +26,7 @@ class Seed extends Command
     protected function configure(): void
     {
         $this->setDescription('Run seeders');
-        $this->addArgument('seeder', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, 'The name of seeders (separated by space if many)');
+        $this->addArgument('seeder', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'The name of seeders (separated by space if many)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,10 +16,10 @@ use Core\Database\Model;
 class UpdateUseCase
 {
     public function handle(array $data, string $email): Model|false
-	{
+    {
         $user = User::findByEmail($email);
 
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
@@ -26,5 +28,5 @@ class UpdateUseCase
         }
 
         return $user->set($data)->save();
-	}
+    }
 }

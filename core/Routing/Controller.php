@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Routing;
 
 use Core\Http\Request;
@@ -15,7 +17,8 @@ class Controller
         public Response $response,
         public Session $session,
         public Cookies $cookies
-    ) {}
+    ) {
+    }
 
     public function redirectUrl(string $uri, array $queries = []): void
     {

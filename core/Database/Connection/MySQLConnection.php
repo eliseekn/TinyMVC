@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,24 +16,24 @@ use PDOStatement;
 
 class MySQLConnection implements ConnectionInterface
 {
-	protected PDO $pdo;
+    protected PDO $pdo;
 
     /**
      * @throws PDOException
-	 */
-	public function __construct()
-	{
-		try {
+     */
+    public function __construct()
+    {
+        try {
             $this->pdo = new PDO('mysql:host=' . config('database.mysql.host') . ';port=' . config('database.mysql.port'), config('database.mysql.username'), config('database.mysql.password'));
             $this->pdo->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES ' . config('database.mysql.charset') . ' COLLATE ' . config('database.mysql.collation'));
             $this->pdo->setAttribute(PDO::MYSQL_ATTR_FOUND_ROWS, true);
-			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-			$this->pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
-		} catch (PDOException $e) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+            $this->pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
+        } catch (PDOException $e) {
             throw new PDOException($e->getMessage());
-		}
+        }
     }
 
     public function getPDO(): PDO
@@ -48,31 +50,31 @@ class MySQLConnection implements ConnectionInterface
 
     /**
      * @throws PDOException
-	 */
+     */
     public function executeStatement(string $query): false|int
     {
         try {
             return $this->pdo->exec($query);
-		} catch (PDOException $e) {
-			throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
         }
     }
 
-	/**
+    /**
      * @throws PDOException
-	 */
-	public function executeQuery(string $query, ?array $args = null): false|PDOStatement
-	{
+     */
+    public function executeQuery(string $query, ?array $args = null): false|PDOStatement
+    {
 
         try {
-			$stmt = $this->pdo->prepare(trim($query));
+            $stmt = $this->pdo->prepare(trim($query));
             $stmt->execute($args);
-		} catch (PDOException $e) {
+        } catch (PDOException $e) {
             throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
-		}
+        }
 
-		return $stmt;
-	}
+        return $stmt;
+    }
 
     public function schemaExists(string $name): bool
     {
@@ -95,8 +97,9 @@ class MySQLConnection implements ConnectionInterface
 
     public function createSchema(string $name): void
     {
-        $this->executeStatement('
-            CREATE DATABASE ' . $name . ' CHARACTER SET ' . config('database.mysql.charset') . 
+        $this->executeStatement(
+            '
+            CREATE DATABASE ' . $name . ' CHARACTER SET ' . config('database.mysql.charset') .
             ' COLLATE ' . config('database.mysql.collation')
         );
     }

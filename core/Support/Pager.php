@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -11,21 +13,22 @@ namespace Core\Support;
 use Core\Http\Request;
 
 /**
- * Generate pagination from database 
+ * Generate pagination from database.
  */
 class Pager
 {
     protected array $pagination = [];
+
     protected array $items = [];
 
     public function __construct(int $total_items, int $items_per_page, int $page = 1)
     {
         $this->pagination = [
-			'page' => $page,
+            'page' => $page,
             'first_item' => ($page - 1) * $items_per_page,
-			'total_items' => $total_items,
-			'items_per_page' => $items_per_page,
-			'total_pages' => $items_per_page > 0 ? ceil($total_items / $items_per_page) : 1
+            'total_items' => $total_items,
+            'items_per_page' => $items_per_page,
+            'total_pages' => $items_per_page > 0 ? ceil($total_items / $items_per_page) : 1,
         ];
     }
 
@@ -33,67 +36,72 @@ class Pager
     {
         return $this->items;
     }
-    
+
     public function setItems(array $items): self
     {
         $this->items = $items;
+
         return $this;
     }
-    
+
     public function getFirstItem(): int
     {
         return $this->pagination['first_item'];
     }
-    
+
     public function getTotalItems(): int
     {
         return $this->pagination['total_items'];
     }
-    
+
     public function getPageTotalItems(): int
     {
         return count($this->items);
     }
-    
+
     public function getItemsPerPage(): int
     {
         return $this->pagination['items_per_page'];
     }
-    
+
     public function currentPage(): int
     {
-        if ($this->pagination['page'] < 1) return 1;
-        if ($this->pagination['page'] > $this->totalPages()) return $this->totalPages();
+        if ($this->pagination['page'] < 1) {
+            return 1;
+        }
+        if ($this->pagination['page'] > $this->totalPages()) {
+            return $this->totalPages();
+        }
 
         return $this->pagination['page'];
     }
-    
+
     public function previousPage(): int
     {
         return $this->currentPage() - 1;
     }
-    
+
     public function nextPage(): int
     {
         return $this->currentPage() + 1;
     }
-    
+
     /**
-     * Check if pagination has less pages
+     * Check if pagination has less pages.
      */
     public function hasLess(): bool
     {
         return $this->currentPage() > 1;
     }
-    
+
     /**
-     * Check if pagination has more pages
+     * Check if pagination has more pages.
      */
     public function hasMore(): bool
     {
         return $this->currentPage() < $this->totalPages();
     }
-    
+
     public function totalPages(): int
     {
         return $this->pagination['total_pages'];
@@ -108,7 +116,7 @@ class Pager
     {
         return url($this->generateUri($this->previousPage()));
     }
-    
+
     public function nextPageUrl(): string
     {
         return url($this->generateUri($this->nextPage()));
@@ -118,14 +126,14 @@ class Pager
     {
         return url($this->generateUri($this->totalPages()));
     }
-    
+
     public function pageUrl(int $page): string
     {
         return url($this->generateUri($page));
     }
-    
+
     /**
-     * Generate uri with queries or not
+     * Generate uri with queries or not.
      */
     private function generateUri(int $page): string
     {
@@ -136,18 +144,16 @@ class Pager
             $queries = substr($uri, strpos($uri, '?'), strlen($uri));
         }
 
-        if (!isset($queries)) {
+        if (! isset($queries)) {
             $uri = $request->uri() . '?page=' . $page;
-        } 
-        
-        else {
+        } else {
             if (strpos($queries, '&page=')) {
                 $queries = substr($queries, strpos($queries, '?'), -1);
                 $uri = $request->uri() . $queries . $page;
             } elseif (strpos($queries, '?page=')) {
                 $queries = substr($queries, strpos($queries, '?'), -1);
                 $uri = $request->uri() . $queries . $page;
-            } else  {
+            } else {
                 $uri = $request->uri() . $queries . '&page=' . $page;
             }
         }

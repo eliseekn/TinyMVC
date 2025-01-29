@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -11,29 +13,20 @@ namespace Core\Support;
 use ErrorException;
 
 /**
- * Manage files and folders
+ * Manage files and folders.
  */
 class Storage
 {
     protected static string $path = '';
-    
+
     /**
-     * Set storage path
+     * Set storage path.
      */
     public static function path(string $path = APP_ROOT): self
     {
         self::$path = $path;
+
         return new self();
-    }
-
-    public static function init(): void
-    {
-        $storage = self::path(absolute_path('storage'));
-
-        if (!$storage->isDir()) $storage->createDir();
-        if (!$storage->path(config('storage.logs'))->isDir()) $storage->createDir();
-        if (!$storage->path(config('storage.cache'))->isDir()) $storage->createDir();
-        if (!$storage->path(config('storage.sqlite'))->isDir()) $storage->createDir();
     }
 
     public function getPath(): string
@@ -44,6 +37,7 @@ class Storage
     public function addPath(string $path, string $trailling_slash = DIRECTORY_SEPARATOR): self
     {
         self::$path .= real_path($path) . $trailling_slash;
+
         return $this;
     }
 
@@ -66,39 +60,41 @@ class Storage
     {
         return mkdir(self::$path . $pathname, $mode, $recursive);
     }
-    
+
     public function writeFile(string $filename, $content, bool $append = false): bool
     {
-        if (!$this->isDir() && !$this->createDir(recursive: true)) {
+        if (! $this->isDir() && ! $this->createDir(recursive: true)) {
             return false;
         }
 
         $flag = $append ? FILE_APPEND | LOCK_EX : 0;
         $success = file_put_contents(self::$path . $filename, $content, $flag);
-        return !($success === false);
+
+        return ! ($success === false);
     }
-    
+
     public function readFile(string $filename): string
     {
         $data = file_get_contents(self::$path . $filename);
+
         return $data === false ? '' : $data;
     }
-    
+
     public function copyFile(string $filename, string $destination): bool
     {
         return copy(self::$path . $filename, self::$path . $destination);
-    } 
-    
+    }
+
     public function renameFile(string $oldname, string $newname): bool
     {
         return rename(self::$path . $oldname, self::$path . $newname);
-    } 
-    
+    }
+
     public function moveFile(string $filename, string $destination): bool
     {
         return $this->renameFile($filename, $destination);
     }
-    
+
     public function isFile(string $filename): bool
     {
         return is_file(self::$path . $filename);
@@ -108,12 +104,12 @@ class Storage
     {
         return is_dir(self::$path . $pathname);
     }
-    
+
     public function deleteFile(string $filename): bool
     {
         return unlink(self::$path . $filename);
     }
-    
+
     /**
      * @link https://stackoverflow.com/questions/3338123/how-do-i-recursively-delete-a-directory-and-its-entire-contents-files-sub-dir
      */
@@ -125,14 +121,14 @@ class Storage
 
             foreach ($objects as $object) {
                 if ($object != '.' && $object != '..') {
-                    if ($this->isDir($pathname . $object) && !is_link(self::$path . $pathname . $object)) {
+                    if ($this->isDir($pathname . $object) && ! is_link(self::$path . $pathname . $object)) {
                         $this->deleteDir($pathname . $object);
                     } else {
                         $this->deleteFile($pathname . $object);
                     }
                 }
             }
-    
+
             return rmdir(self::$path . $pathname);
         }
 
@@ -145,7 +141,9 @@ class Storage
         $objects = $this->getFilesAndFolders();
 
         foreach ($objects as $object) {
-            if ($this->isFile($object)) $results[] = basename($object);
+            if ($this->isFile($object)) {
+                $results[] = basename($object);
+            }
         }
 
         return $results;
@@ -157,7 +155,9 @@ class Storage
         $objects = $this->getFilesAndFolders();
 
         foreach ($objects as $object) {
-            if ($this->isDir($object)) $results[] = basename($object);
+            if ($this->isDir($object)) {
+                $results[] = basename($object);
+            }
         }
 
         return $results;
@@ -169,7 +169,7 @@ class Storage
 
         try {
             $objects = scandir(self::$path);
-        } catch(ErrorException $e) {
+        } catch (ErrorException $e) {
             return $results;
         }
 

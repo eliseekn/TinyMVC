@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Events;
 
 use Core\Exceptions\InvalidEventNameException;
@@ -11,7 +13,7 @@ class Event
 
     public static function listen(string $name, $callback): void
     {
-        if (!self::isValidName($name)) {
+        if (! self::isValidName($name)) {
             throw new InvalidEventNameException();
         }
 
@@ -27,7 +29,7 @@ class Event
 
     public static function loadListeners(): void
     {
-        if (!empty(config('events.listeners'))) {
+        if (! empty(config('events.listeners'))) {
             $listeners = config('events.listeners');
 
             foreach ($listeners as $event => $callback) {

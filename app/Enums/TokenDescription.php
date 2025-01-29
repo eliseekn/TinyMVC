@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 enum TokenDescription: string
 {
-    public const PASSWORD_RESET_TOKEN = 'password_reset_token';
-    public const EMAIL_VERIFICATION_TOKEN = 'email_verification_token';
+    public const PASSWORD_RESET = 'password_reset';
+
+    public const EMAIL_VERIFICATION = 'email_verification';
 }

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * English translations
+ * English translations.
  */
 
 return [
@@ -35,7 +37,7 @@ return [
     'password_reset_link_not_sent' => 'Failed to send paswword reset link',
     'invalid_password_reset_link' => 'Invalid Password reset link',
     'expired_password_reset_link' => 'Password reset link expired',
-    'email_verified' => 'Your email address has been verified',
+    'email_verified_at' => 'Your email address has been verified',
     'password_reset' => 'Your password has been reset',
     'login_failed' => 'Incorrect email address or password',
     'auth_attempts_exceeded' => 'Max authentication attempts exceeded. Please retry in {timeout} minute(s)',
@@ -63,5 +65,5 @@ return [
     'september' => 'September',
     'october' => 'October',
     'november' => 'November',
-    'week' => 'Week'
+    'week' => 'Week',
 ];

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Generate hashed password
+ * Generate hashed password.
  */
 class Password extends Command
 {
@@ -28,7 +30,8 @@ class Password extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>' . hash_pwd($input->getArgument('password')) . '</info>');
+        $output->writeln('<info>' . hash($input->getArgument('password')) . '</info>');
+
         return Command::SUCCESS;
     }
 }

@@ -8,23 +8,23 @@ TinyMVC is a PHP framework based on MVC architecture that helps you build easily
 ## Requirements
 ```
 PHP 8.1.x
-MySQL or SQLite
-Comoser
-Yarn or NPM
+MySQL/SQLite
+Composer
+Node
 ```
 
 ## Installation
 
-1\. Create new composer project
+1. Create new composer project
 
-On your console :
+In your terminal :
 ```
 composer create-project eliseekn/tinymvc project-name
 ```
 
-2\. Install packages dependencies
+2. Install packages dependencies
 
-On your console :
+In your terminal :
 ```
 cd ./project-name
 yarn && yarn build
@@ -32,22 +32,24 @@ yarn && yarn build
 
 ## Your first application
 
-1\. Setup application
+1. Setup application
 
-On your console :
+In your terminal :
 ```
 cp .env.example .env
 php console app:setup
 ```
-2\. Setup database
 
-On your console :
+2. Setup database
+
+In your terminal :
 ```
 php console migrations:run --seed
 ```
-3\. Start a local server development
 
-On your console :
+3. Start a local server development
+
+In your terminal :
 ```
 php console serve
 ```
@@ -60,4 +62,4 @@ php console list
 [MIT](https://opensource.org/licenses/MIT)
 
 ## Copyright
-2019 - 2023 © N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>

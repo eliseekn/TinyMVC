@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -11,7 +13,7 @@ namespace Core\Database\Factory;
 use Core\Database\Model;
 
 /**
- * Manage models factories
+ * Manage models factories.
  */
 class Factory
 {
@@ -33,11 +35,13 @@ class Factory
     {
         if (count($this->class) === 1) {
             $this->class[0]->set(array_merge($this->data(), $data));
+
             return $this->class[0];
         }
 
         return array_map(function ($model) use ($data) {
             $model->set(array_merge($this->data(), $data));
+
             return $model;
         }, $this->class);
     }
@@ -46,7 +50,7 @@ class Factory
     {
         $class = $this->make($data);
 
-        if (!is_array($class)) {
+        if (! is_array($class)) {
             return $class->create($class->get());
         }
 

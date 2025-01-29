@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -21,7 +23,7 @@ class RegisterController extends Controller
     #[Route('GET', '/signup', ['remember'])]
     public function index(): void
     {
-        if (!Auth::check($this->request)) {
+        if (! Auth::check($this->request)) {
             $this->render('auth.signup');
         }
 
@@ -29,13 +31,12 @@ class RegisterController extends Controller
     }
 
     #[Route(methods: 'POST', middlewares: ['csrf'])]
-    public function register(StoreUseCase $useCase): void
+    public function register(StoreUseCase $useCase, RegisterValidator $validator): void
     {
-        $validated = $this->validate(new RegisterValidator());
-        $user = $useCase->handle($validated);
+        $user = $useCase->handle($validator->validated());
 
         if (config('security.auth.email_verification')) {
-            $this->redirectUrl('/email/notify' , ['email' => $user->get('email')]);
+            $this->redirectUrl('/email/notify', ['email' => $user->get('email')]);
         }
 
         UserRegisteredEvent::dispatch([$user]);

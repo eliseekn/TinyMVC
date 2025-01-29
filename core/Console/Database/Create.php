@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -15,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create new database 
+ * Create new database.
  */
 class Create extends Command
 {
@@ -24,7 +26,7 @@ class Create extends Command
     protected function configure(): void
     {
         $this->setDescription('Create new database');
-        $this->addArgument('database', InputArgument::IS_ARRAY|InputArgument::OPTIONAL, 'The name of database (separated by space if many) or leave empty to for application database');
+        $this->addArgument('database', InputArgument::IS_ARRAY | InputArgument::OPTIONAL, 'The name of database (separated by space if many) or leave empty to for application database');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -16,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Setup application
+ * Setup application.
  */
 class Setup extends Command
 {
@@ -48,15 +50,19 @@ class Setup extends Command
         $config['MAILER_PORT'] = $this->getInput($io->ask('Mailer port', '1025'));
         $config['MAILER_USERNAME'] = $this->getInput($io->ask('Mailer username'));
         $config['MAILER_PASSWORD'] = $this->getInput($io->ask('Mailer password'));
+        $config['MAILER_SENDER_NAME'] = $this->getInput($io->ask('Mailer sender name'));
+        $config['MAILER_SENDER_MAIL'] = $this->getInput($io->ask('Mailer sender mail'));
+
         $config['ENCRYPTION_KEY'] = generate_token();
 
         Config::saveEnv($config);
 
-        if (!Storage::path(config('storage.lang'))->isFile(config('app.lang'))) {
+        if (! Storage::path(config('storage.lang'))->isFile(config('app.lang'))) {
             Storage::path(config('storage.lang'))->copyFile('en.php', config('app.lang') . '.php');
         }
 
         $output->writeln('<info>[INFO] Application has been set up. You need to restart server to apply changes.</info>');
+
         return Command::SUCCESS;
     }
 

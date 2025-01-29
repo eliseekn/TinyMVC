@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -9,15 +11,15 @@
 namespace Core\Console\Database\Migrations;
 
 use Core\Database\Connection\Connection;
-use Core\Support\Storage;
 use Core\Database\QueryBuilder;
+use Core\Support\Storage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Display migrations tables status
+ * Display migrations tables status.
  */
 class Status extends Command
 {
@@ -45,10 +47,10 @@ class Status extends Command
 
         return Command::SUCCESS;
     }
-    
+
     protected function isMigrated(string $table): bool
     {
-        if (!Connection::getInstance()->tableExists('migrations')) {
+        if (! Connection::getInstance()->tableExists('migrations')) {
             return false;
         }
 
@@ -57,5 +59,4 @@ class Status extends Command
             ->where('name', $table)
             ->exists();
     }
-    
 }

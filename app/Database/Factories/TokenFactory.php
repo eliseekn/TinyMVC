@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -27,7 +29,7 @@ class TokenFactory extends Factory
             'email' => faker()->unique()->email,
             'value' => generate_token(),
             'expires_at' => carbon()->addHour()->toDateTimeString(),
-            'description' => TokenDescription::PASSWORD_RESET_TOKEN
+            'description' => TokenDescription::PASSWORD_RESET,
         ];
     }
 }

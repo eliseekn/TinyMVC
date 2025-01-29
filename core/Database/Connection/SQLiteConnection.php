@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -15,24 +17,26 @@ use PDOStatement;
 
 class SQLiteConnection implements ConnectionInterface
 {
-	protected PDO $pdo;
+    protected PDO $pdo;
 
     /**
      * @throws PDOException
-	 */
-	public function __construct()
-	{
-		try {
+     */
+    public function __construct()
+    {
+        try {
             $this->pdo = new PDO('sqlite:' . $this->getDB());
-			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			$this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-			$this->pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+            $this->pdo->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
 
-            if (config('database.sqlite.memory')) $this->pdo->setAttribute(PDO::ATTR_PERSISTENT, true);
-		} catch (PDOException $e) {
+            if (config('database.sqlite.memory')) {
+                $this->pdo->setAttribute(PDO::ATTR_PERSISTENT, true);
+            }
+        } catch (PDOException $e) {
             throw new PDOException($e->getMessage());
-		}
+        }
     }
 
     public function getPDO(): PDO
@@ -52,30 +56,30 @@ class SQLiteConnection implements ConnectionInterface
 
     /**
      * @throws PDOException
-	 */
+     */
     public function executeStatement(string $query): false|int
     {
         try {
             return $this->pdo->exec($query);
-		} catch (PDOException $e) {
-			throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
         }
     }
 
-	/**
+    /**
      * @throws PDOException
-	 */
-	public function executeQuery(string $query, ?array $args = null): false|PDOStatement
-	{
-		try {
-			$stmt = $this->pdo->prepare(trim($query));
-			$stmt->execute($args);
-		} catch (PDOException $e) {
-			throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
-		}
+     */
+    public function executeQuery(string $query, ?array $args = null): false|PDOStatement
+    {
+        try {
+            $stmt = $this->pdo->prepare(trim($query));
+            $stmt->execute($args);
+        } catch (PDOException $e) {
+            throw new PDOException($e->getMessage(), (int) $e->getCode(), $e->getPrevious());
+        }
 
-		return $stmt;
-	}
+        return $stmt;
+    }
 
     public function schemaExists(string $name): bool
     {
@@ -85,19 +89,20 @@ class SQLiteConnection implements ConnectionInterface
     public function tableExists(string $name): bool
     {
         $stmt = $this->executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" . $name . "'");
+
         return $stmt->fetch() !== false;
     }
 
     public function createSchema(string $name): void
     {
-        if (!config('database.sqlite.memory')) {
+        if (! config('database.sqlite.memory')) {
             Storage::path(config('storage.sqlite'))->writeFile($name . '.db', '');
         }
     }
 
     public function deleteSchema(string $name): void
     {
-        if (!config('database.sqlite.memory')) {
+        if (! config('database.sqlite.memory')) {
             Storage::path(config('storage.sqlite'))->deleteFile($name . '.db');
         }
     }

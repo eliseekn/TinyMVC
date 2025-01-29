@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create new helper 
+ * Create new helper.
  */
 class Helper extends Command
 {
@@ -23,7 +25,7 @@ class Helper extends Command
     protected function configure(): void
     {
         $this->setDescription('Create new helper');
-        $this->addArgument('helper', InputArgument::REQUIRED|InputArgument::IS_ARRAY, 'The name of helper (separated by space if many)');
+        $this->addArgument('helper', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The name of helper (separated by space if many)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -33,7 +35,7 @@ class Helper extends Command
         foreach ($helpers as $helper) {
             list(, $class) = Maker::generateClass($helper);
 
-            if (!Maker::createHelper($helper)) {
+            if (! Maker::createHelper($helper)) {
                 $output->writeln('<error>[ERROR] Failed to create helper "' . $class . '"</error>');
             } else {
                 $output->writeln('<info>[INFO] Helper "' . $class . '" has been created</info>');

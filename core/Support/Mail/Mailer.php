@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -9,11 +11,11 @@
 namespace Core\Support\Mail;
 
 use Exception;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 /**
- * Send emails using PHPMailer
+ * Send emails using PHPMailer.
  */
 class Mailer implements MailInterface
 {
@@ -41,7 +43,7 @@ class Mailer implements MailInterface
                 $this->phpMailer->SMTPSecure = config('mailer.smtp.tls') ? PHPMailer::ENCRYPTION_STARTTLS : PHPMailer::ENCRYPTION_SMTPS;
             } else {
                 $this->phpMailer->SMTPAutoTLS = false;
-                $this->phpMailer->SMTPSecure = false;
+                $this->phpMailer->SMTPSecure = '';
             }
         }
     }
@@ -49,36 +51,42 @@ class Mailer implements MailInterface
     public function to(string $address, string $name = ''): self
     {
         $this->phpMailer->addAddress($address, $name);
+
         return $this;
     }
 
     public function from(string $address, string $name = ''): self
     {
         $this->phpMailer->setFrom($address, $name);
+
         return $this;
     }
 
     public function reply(string $address, string $name = ''): self
     {
         $this->phpMailer->addReplyTo($address, $name);
+
         return $this;
     }
-    
+
     public function cc(string $address, string $name = ''): self
     {
         $this->phpMailer->addCC($address, $name);
+
         return $this;
     }
-    
+
     public function bcc(string $address, string $name = ''): self
     {
         $this->phpMailer->addBCC($address, $name);
+
         return $this;
     }
 
     public function subject(string $subject): self
     {
         $this->phpMailer->Subject = $subject;
+
         return $this;
     }
 
@@ -96,14 +104,17 @@ class Mailer implements MailInterface
     public function attachment(string $attachment, string $filename = ''): self
     {
         $this->phpMailer->addAttachment($attachment, $filename);
+
         return $this;
     }
-    
+
     public function send(): bool
     {
         try {
             return $this->phpMailer->send();
         } catch (Exception $e) {
+            error_log($e->getMessage());
+
             return false;
         }
     }

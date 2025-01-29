@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * French translations
+ * French translations.
  */
 
 return [
@@ -35,10 +37,10 @@ return [
     'password_reset_link_not_sent' => "Echec de l'envoie du lien de réinitialisation de mot de passe",
     'invalid_password_reset_link' => 'Lien de réinitialisation de mot de passe invalide',
     'expired_password_reset_link' => 'Lien de réinitialisation de mot de passe expiré',
-    'email_verified' => 'Votre adresse email a été vérifiée',
+    'email_verified_at' => 'Votre adresse email a été vérifiée',
     'password_reset' => 'Votre mot de passe a été réinitialisé',
     'login_failed' => 'Mot de passe ou adresse email incorrecte',
-    'auth_attempts_exceeded' => "Nombre maximum de tentatives de connexions dépassé. Veuillez réessayez dans {timeout} minute(s)",
+    'auth_attempts_exceeded' => 'Nombre maximum de tentatives de connexions dépassé. Veuillez réessayez dans {timeout} minute(s)',
     'auth_required' => 'Autorisation Requise',
     'invalid_auth_method' => "Méthode d'authentification invalide",
     'invalid_credentials' => 'Accès invalides',
@@ -63,5 +65,5 @@ return [
     'september' => 'Septembre',
     'october' => 'Octobre',
     'november' => 'Novembre',
-    'week' => 'Semaine'
+    'week' => 'Semaine',
 ];

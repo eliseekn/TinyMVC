@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Console;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 /**
- * Run PHPUnit tests cases
+ * Run PHPUnit tests cases.
  */
 class Tests extends Command
 {
@@ -19,14 +22,16 @@ class Tests extends Command
     protected function configure(): void
     {
         $this->setDescription('Run tests cases');
-        $this->addArgument('filename', InputArgument::OPTIONAL, 'Specify test filename');
+        $this->addArgument('test', InputArgument::OPTIONAL, 'Specify test name');
         $this->addArgument('filter', InputArgument::OPTIONAL, 'Specify test case');
+        $this->addOption('unit', null, InputOption::VALUE_OPTIONAL, 'Use Unit test folder');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (config('app.env') !== 'test') {
             $output->writeln('<comment>[WARNING] You must set APP_ENV to test in application configuration</comment>');
+
             return Command::FAILURE;
         }
 
@@ -38,13 +43,19 @@ class Tests extends Command
         $server->setTimeout(null);
         $server->start();
 
+        $folder = is_null($input->getOption('unit')) ? 'Application' : 'Unit';
+
         $args = ['php', 'vendor/bin/phpunit'];
 
-        if (!is_null($input->getArgument('filename'))) {
-            $args = array_merge($args, ['tests' . DIRECTORY_SEPARATOR . $input->getArgument('filename')]);
+        if (! is_null($input->getArgument('test'))) {
+            $filename = str_contains('.php', $input->getArgument('test'))
+                ? $input->getArgument('test')
+                : $input->getArgument('test') . '.php';
+
+            $args = array_merge($args, ['tests' . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR . $filename]);
         }
 
-        if (!is_null($input->getArgument('filter'))) {
+        if (! is_null($input->getArgument('filter'))) {
             $args = array_merge($args, ['--filter=' . $input->getArgument('filter')]);
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Routing\Attributes;
 
 use Attribute;
@@ -12,5 +14,6 @@ class Route
         public ?string $uri = null,
         public ?array $middlewares = null,
         public ?string $name = null
-    ) {}
+    ) {
+    }
 }

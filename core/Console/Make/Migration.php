@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -9,13 +11,13 @@
 namespace Core\Console\Make;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create new migration
+ * Create new migration.
  */
 class Migration extends Command
 {
@@ -24,7 +26,7 @@ class Migration extends Command
     protected function configure(): void
     {
         $this->setDescription('Create new migration');
-        $this->addArgument('migration', InputArgument::REQUIRED|InputArgument::IS_ARRAY, 'The name of migration table (separated by space if many)');
+        $this->addArgument('migration', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The name of migration table (separated by space if many)');
         $this->addOption('seeder', null, InputOption::VALUE_NONE, 'Create seeder');
     }
 
@@ -35,7 +37,7 @@ class Migration extends Command
         foreach ($migrations as $migration) {
             list(, $class) = Maker::generateClass($migration, 'migration');
 
-            if (!Maker::createMigration($migration)) {
+            if (! Maker::createMigration($migration)) {
                 $output->writeln('<error>[ERROR] Failed to create migration "' . $class . '"</error>');
             } else {
                 $output->writeln('<info>[INFO] Migration "' . $class . '" has been created</info>');
@@ -45,8 +47,8 @@ class Migration extends Command
         if ($input->getOption('seeder')) {
             foreach ($migrations as $migration) {
                 list(, $class) = Maker::generateClass($migration, 'seeder', true, true);
-            
-                if (!Maker::createSeeder($migration)) {
+
+                if (! Maker::createSeeder($migration)) {
                     $output->writeln('<error>[ERROR] Failed to create seeder "' . Maker::fixPlural($class, true) . '"</error>');
                 } else {
                     $output->writeln('<info>[INFO] Seeder "' . Maker::fixPlural($class, true) . '" has been created</info>');

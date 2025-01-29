@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Console;
 
 use Closure;
 use Core\Routing\Route;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\Table;
 
 /**
- * Display registered routes list
+ * Display registered routes list.
  */
 class Routes extends Command
 {
@@ -41,7 +43,7 @@ class Routes extends Command
                 $handler = 'Closure';
             }
 
-            if (!empty($middlewares)) {
+            if (! empty($middlewares)) {
                 $middlewares = implode(', ', $middlewares);
             }
 

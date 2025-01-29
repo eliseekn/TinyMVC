@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -14,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create new request rule
+ * Create new request rule.
  */
 class Rule extends Command
 {
@@ -23,7 +25,7 @@ class Rule extends Command
     protected function configure(): void
     {
         $this->setDescription('Create new custom validator rule');
-        $this->addArgument('rule', InputArgument::REQUIRED|InputArgument::IS_ARRAY, 'The name of rule (separated by space if many)');
+        $this->addArgument('rule', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The name of rule (separated by space if many)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -33,7 +35,7 @@ class Rule extends Command
         foreach ($rules as $rule) {
             list(, $class) = Maker::generateClass(base_name: $rule, singular: true);
 
-            if (!Maker::createRule($rule)) {
+            if (! Maker::createRule($rule)) {
                 $output->writeln('<error>[ERROR] Failed to create request rule "' . $class . '"</error>');
             } else {
                 $output->writeln('<info>[INFO] Request rule "' . $class . '" has been created</info>');

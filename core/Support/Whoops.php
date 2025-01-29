@@ -1,26 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
 namespace Core\Support;
 
-use Whoops\Run;
 use Exception as BaseException;
 use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
-class Exception extends BaseException {}
+class Exception extends BaseException
+{
+}
 
 /**
- * Register Whoops
+ * Register Whoops.
  */
-class Whoops 
-{    
+class Whoops
+{
     /**
-     * Register whoops instance
+     * Register whoops instance.
      */
     public static function register(): void
     {
@@ -31,4 +35,3 @@ class Whoops
         $run->register();
     }
 }
-

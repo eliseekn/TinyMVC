@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -18,7 +20,7 @@ class VerificationMail
             ->to($email)
             ->from(config('mailer.sender.email'), config('mailer.sender.name'))
             ->reply(config('mailer.sender.email'), config('mailer.sender.name'))
-			->subject('Email verification')
+            ->subject('Email verification')
             ->body(view('emails.verification', compact('email', 'token')))
             ->send();
     }

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -10,13 +12,13 @@ namespace Core\Console\Database\Migrations;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Reset migrations tables
+ * Reset migrations tables.
  */
 class Reset extends Command
 {
@@ -25,7 +27,7 @@ class Reset extends Command
     protected function configure(): void
     {
         $this->setDescription('Reset migrations tables');
-        $this->addArgument('table', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, 'The name of migrations tables (separated by space if many)');
+        $this->addArgument('table', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'The name of migrations tables (separated by space if many)');
         $this->addOption('seed', null, InputOption::VALUE_NONE, 'Insert all seeds');
     }
 

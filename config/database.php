@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
-/**
+/*
  * Database configuration
  */
 
@@ -21,10 +23,10 @@ return [
         'password' => env('DB_PASSWORD', 'root'),
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
-        'engine' => 'InnoDB'
+        'engine' => 'InnoDB',
     ],
 
     'sqlite' => [
         'memory' => false,
-    ]
+    ],
 ];

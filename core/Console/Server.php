@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Core\Console;
 
 use Symfony\Component\Console\Command\Command;
@@ -9,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 /**
- * Start a local server development
+ * Start a local server development.
  */
 class Server extends Command
 {

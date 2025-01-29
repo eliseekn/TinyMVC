@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -12,18 +14,19 @@ use PDO;
 use PDOStatement;
 
 /**
- * Manage database connection
+ * Manage database connection.
  */
 class Connection
 {
-	/**
-	 * @var \Core\Database\Connection\Connection
-	 */
-	protected static ?Connection $instance = null;
+    /**
+     * @var Connection
+     */
+    protected static ?Connection $instance = null;
+
     protected MySQLConnection|SQLiteConnection $db;
 
-	private function __construct()
-	{
+    private function __construct()
+    {
         $driver = config('app.env') === 'test'
             ? config('tests.database.driver')
             : config('database.driver');
@@ -31,12 +34,12 @@ class Connection
         $this->db = $driver === 'mysql' ? new MySQLConnection() : new SQLiteConnection();
     }
 
-	public static function getInstance(): self
-	{
-		if (is_null(self::$instance)) {
-			self::$instance = new static();
+    public static function getInstance(): self
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new static();
         }
-        
+
         return self::$instance;
     }
 
@@ -45,10 +48,10 @@ class Connection
         return $this->db->executeStatement($query);
     }
 
-	public function executeQuery(string $query, ?array $args = null): false|PDOStatement
-	{
+    public function executeQuery(string $query, ?array $args = null): false|PDOStatement
+    {
         return $this->db->executeQuery($query, $args);
-	}
+    }
 
     public function schemaExists(string $name): bool
     {
