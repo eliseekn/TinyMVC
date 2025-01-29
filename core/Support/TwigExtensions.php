@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
 namespace Core\Support;
 
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Twig\Extension\GlobalsInterface;
-use Twig\Extension\AbstractExtension;
 
 /**
- * Manage twig extensions and filters
+ * Manage twig extensions and filters.
  */
 class TwigExtensions extends AbstractExtension implements GlobalsInterface
-{    
+{
     public function getCustomFunctions(): array
     {
         $functions = [];
@@ -71,14 +73,13 @@ class TwigExtensions extends AbstractExtension implements GlobalsInterface
             new TwigFunction('csrf_token_meta', 'csrf_token_meta'),
             new TwigFunction('url', 'url'),
             new TwigFunction('route', 'route'),
-            new TwigFunction('assets', 'assets'),
-            new TwigFunction('resources', 'resources'),
-            new TwigFunction('storage', 'storage'),
+            new TwigFunction('assets_path', 'assets_path'),
+            new TwigFunction('resources_path', 'resources_path'),
+            new TwigFunction('storage_path', 'storage_path'),
             new TwigFunction('current_url', 'current_url'),
             new TwigFunction('url_contains', 'url_contains'),
             new TwigFunction('config', 'config'),
             new TwigFunction('__', '__'),
-            new TwigFunction('env', 'env'),
             new TwigFunction('date', 'date'),
             new TwigFunction('session', 'session'),
             new TwigFunction('cookies', 'cookies'),
