@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
 namespace Core;
 
-use Core\Http\Request;
+use Core\Events\Event;
+use Core\Routing\Route;
 use Core\Routing\Router;
 use Core\Support\Whoops;
-use Core\Http\Response;
-use Core\Events\Event;
 
 /**
- * Main application
+ * Main application.
  */
 class Application
 {
@@ -23,6 +24,7 @@ class Application
     {
         Whoops::register();
         Event::loadListeners();
-        Router::dispatch(new Request(), new Response());
+        Route::load();
+        Router::dispatch();
     }
 }

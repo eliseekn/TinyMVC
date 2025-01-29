@@ -1,16 +1,17 @@
-<?PHP
+<?php
+
+declare(strict_types=1);
 
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
 
-use Core\Routing\Route;
 use Core\Support\Config;
 use Core\Support\Storage;
 
-/**
+/*
  * Application initialization
  */
 
@@ -29,9 +30,8 @@ set_exception_handler(function ($e) {
 
 const APP_ROOT = __DIR__ . DIRECTORY_SEPARATOR;
 
-Storage::init();
+init_storage();
 Config::loadEnv();
-Route::load();
 
 if (config('errors.display')) {
     ini_set('display_errors', 1);
