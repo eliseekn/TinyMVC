@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * @copyright (2019 - 2024) - N'Guessan Kouadio Elisée (eliseekn@gmail.com)
+ * @copyright 2019-2025 N'Guessan Kouadio Elisée <eliseekn@gmail.com>
  * @license MIT (https://opensource.org/licenses/MIT)
  * @link https://github.com/eliseekn/tinymvc
  */
@@ -20,14 +22,16 @@ class EmailVerificationTest extends ApplicationTestCase
 
     public function test_can_verify_email(): void
     {
-        $user = User::factory()->create(['email_verified' => null]);
+        $user = User::factory()->create(['email_verified_at' => null]);
+
         $token = Token::factory()->create([
             'email' => $user->get('email'),
-            'description' => TokenDescription::EMAIL_VERIFICATION_TOKEN
+            'description' => TokenDescription::EMAIL_VERIFICATION,
         ]);
 
-        $client = $this->get('/email/verify?email=' . $user->get('email') . '&token=' . $token->get('value'));
-        $client->assertRedirectedToUrl(url('login'));
-        $this->assertDatabaseDoesNotHave('tokens', $token->get());
+        $this
+            ->get('/email/verify?email=' . $user->get('email') . '&token=' . $token->get('value'))
+            ->assertRedirectedToUrl(url('login'))
+            ->assertDatabaseDoesNotHave('tokens', $token->get());
     }
 }
