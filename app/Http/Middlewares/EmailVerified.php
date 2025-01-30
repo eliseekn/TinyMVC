@@ -22,15 +22,13 @@ class EmailVerified
 {
     public function handle(Request $request, Response $response): void
     {
-        if (config('security.auth.email_verification')) {
-            if (is_null(Auth::get('email_verified_at'))) {
-                Alert::default(__('email_not_verified'))->error();
+        if (config('security.auth.email_verification') && is_null(Auth::get('email_verified_at'))) {
+            Alert::default(__('email_not_verified'))->error();
 
-                $response
-                    ->url('/login')
-                    ->intended($request->fullUri())
-                    ->send();
-            }
+            $response
+                ->url('/login')
+                ->intended($request->fullUri())
+                ->send();
         }
     }
 }

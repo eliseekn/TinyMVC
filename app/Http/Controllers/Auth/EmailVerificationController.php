@@ -51,7 +51,7 @@ class EmailVerificationController extends Controller
     }
 
     #[Route('GET', '/email/verify')]
-    public function verify(UpdateUseCase $updateUseCase): void
+    public function verify(UpdateUseCase $useCase): void
     {
         if (! $this->request->hasQuery(['email', 'token'])) {
             $this->response(__('bad_request'), 400);
@@ -68,7 +68,7 @@ class EmailVerificationController extends Controller
         }
 
         $token->delete();
-        $user = $updateUseCase->handle(['email_verified_at' => carbon()->toDateTimeString()], $this->request->queries('email'));
+        $user = $useCase->handle(['email_verified_at' => carbon()->toDateTimeString()], $this->request->queries('email'));
 
         if (! $user) {
             Alert::default(__('account_not_found'))->error();

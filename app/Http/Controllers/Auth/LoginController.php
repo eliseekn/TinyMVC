@@ -28,7 +28,7 @@ class LoginController extends Controller
         $this->redirectUrl(config('app.home'));
     }
 
-    #[Route(methods: 'POST', middlewares: ['csrf'])]
+    #[Route('POST', middlewares: ['csrf'])]
     public function authenticate(LoginValidator $validator): void
     {
         if (Auth::attempt($this->response, $this->request)) {

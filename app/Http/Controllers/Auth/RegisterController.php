@@ -30,7 +30,7 @@ class RegisterController extends Controller
         $this->redirectUrl(config('app.home'));
     }
 
-    #[Route(methods: 'POST', middlewares: ['csrf'])]
+    #[Route('POST', middlewares: ['csrf'])]
     public function register(StoreUseCase $useCase, RegisterValidator $validator): void
     {
         $user = $useCase->handle($validator->validated());
