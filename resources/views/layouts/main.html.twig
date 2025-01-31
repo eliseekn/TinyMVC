@@ -6,8 +6,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=Edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="{% block description %}{% endblock %}">
-        <link rel="stylesheet" href="{{ resources_path('vendor/bootstrap-5.1.1-dist/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ assets_path('css/style.css') }}">
+        <link rel="stylesheet" href="{{ public_path('vendor/bootstrap-5.1.1-dist/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ public_path('css/style.css') }}">
         <title>{% block title %}{% endblock %}</title>
     </head>
 
@@ -18,9 +18,9 @@
 
         {% block content %}{% endblock %}
 
-        <script defer src="{{ resources_path('vendor/fontawesome-5.13-all.js') }}"></script>
-        <script defer src="{{ resources_path('vendor/bootstrap-5.1.1-dist/bootstrap.bundle.min.js') }}"></script>
-        <script defer src="{{ assets_path('js/index.js') }}"></script>
+        <script defer src="{{ public_path('vendor/fontawesome-5.13-all.js') }}"></script>
+        <script defer src="{{ public_path('vendor/bootstrap-5.1.1-dist/bootstrap.bundle.min.js') }}"></script>
+        <script defer src="{{ public_path('js/index.js') }}"></script>
     </body>
 </html>
 {% endapply %}

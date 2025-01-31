@@ -261,11 +261,11 @@ if (! function_exists('route')) {
     }
 }
 
-if (! function_exists('assets_path')) {
+if (! function_exists('public_path')) {
     /**
      * Generate assets url from public path.
      */
-    function assets_path(string $asset, $params = null): string
+    function public_path(string $asset, $params = null): string
     {
         return url('public/' . $asset, $params);
     }
@@ -278,16 +278,6 @@ if (! function_exists('storage_path')) {
     function storage_path(string $path, $params = null): string
     {
         return url('storage/' . $path, $params);
-    }
-}
-
-if (! function_exists('resources_path')) {
-    /**
-     * Generate resources path url.
-     */
-    function resources_path(string $path, $params = null): string
-    {
-        return url('resources/' . $path, $params);
     }
 }
 
