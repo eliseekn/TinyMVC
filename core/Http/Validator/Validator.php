@@ -50,7 +50,7 @@ class Validator implements ValidatorInterface
         if ($this->failed() && ! is_null($response)) {
             $response
                 ->back()
-                ->withErrors(['dafds'])
+                ->withErrors($this->errors())
                 ->withInputs($this->inputs)
                 ->send(400);
         }

@@ -81,7 +81,7 @@ class Response
 
         end($history);
 
-        if (prev($history) === false) {
+        if (config('app.env') === 'test' && prev($history) === false) {
             return $this->url('/');
         }
 
