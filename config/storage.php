@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 return [
     'uploads' => absolute_path('storage.uploads'),
+    'public' => absolute_path('public'),
     'routes' => absolute_path('routes'),
     'views' => absolute_path('resources.views'),
     'migrations' => absolute_path('app.Database.Migrations'),
@@ -36,4 +37,5 @@ return [
     'sqlite' => absolute_path('storage.sqlite'),
     'useCases' => absolute_path('app.Http.UseCases'),
     'events' => absolute_path('app.Events'),
+    'assets' => absolute_path('resources.assets'),
 ];

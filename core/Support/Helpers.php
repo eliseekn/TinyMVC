@@ -261,23 +261,23 @@ if (! function_exists('route')) {
     }
 }
 
-if (! function_exists('public_path')) {
+if (! function_exists('public_url')) {
     /**
-     * Generate assets url from public path.
+     * Generate public path url.
      */
-    function public_path(string $asset, $params = null): string
+    function public_url(string $asset): string
     {
-        return url('public/' . $asset, $params);
+        return url('public/' . $asset);
     }
 }
 
-if (! function_exists('storage_path')) {
+if (! function_exists('storage_url')) {
     /**
-     * Generate storage path url.
+     * Generate storage url.
      */
-    function storage_path(string $path, $params = null): string
+    function storage_url(string $path): string
     {
-        return url('storage/' . $path, $params);
+        return url('storage/' . $path);
     }
 }
 
