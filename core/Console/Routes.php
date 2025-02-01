@@ -26,7 +26,7 @@ class Routes extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $rows = [];
-        $routes = Route::$routes;
+        $routes = Route::getAll();
 
         foreach ($routes as $route => $options) {
             list($method, $uri) = explode(' ', $route, 2);
