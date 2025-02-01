@@ -8,8 +8,8 @@
 
         {{ csrf_token_meta()|raw }}
 
-        <link rel="stylesheet" href="{{ public_path('vendor/bootstrap-5.1.1-dist/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ public_path'css/style.css') }}">
+        <link rel="stylesheet" href="{{ public_url('vendor/bootstrap-5.1.1-dist/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ public_url'css/style.css') }}">
         
         {% block styles %}{% endblock %}
 
@@ -23,9 +23,9 @@
 
         {% block content %}{% endblock %}
 
-        <script defer src="{{ public_path('vendor/fontawesome-5.13-all.js') }}"></script>
-        <script defer src="{{ public_path('vendor/bootstrap-5.1.1-dist/bootstrap.bundle.min.js') }}"></script>
-        <script defer src="{{ public_path'js/index.js') }}"></script>
+        <script defer src="{{ public_url('vendor/fontawesome-5.13-all.js') }}"></script>
+        <script defer src="{{ public_url('vendor/bootstrap-5.1.1-dist/bootstrap.bundle.min.js') }}"></script>
+        <script defer src="{{ public_url'js/index.js') }}"></script>
 
         {% block scripts %}{% endblock %}
     </body>

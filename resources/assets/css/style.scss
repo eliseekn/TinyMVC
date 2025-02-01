@@ -9,3 +9,7 @@ html {
 .modal-dialog {
     @include fadeIn(.1s);
 }
+
+svg {
+    pointer-events: none !important;
+}

@@ -1,16 +1,20 @@
 {
-	"private": true,
-	"scripts": {
-		"parcel-watch": "parcel watch resources/scripts/index.js --dist-dir public/js",
-		"sass-watch": "sass --watch resources/styles:public/css --style=compressed",
-		"parcel-build": "parcel build resources/scripts/index.js --dist-dir public/js",
-		"sass-build": "sass resources/styles:public/css --style=compressed",
-		"dev": "concurrently \"yarn parcel-watch\" \"yarn sass-watch\"",
-		"build": "concurrently \"yarn parcel-build\" \"yarn sass-build\""
-	},
-	"devDependencies": {
-		"concurrently": "^6.2.1",
-		"parcel": "next"
-	},
-	"packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+    "private": true,
+    "scripts": {
+        "parcel-watch": "parcel watch resources/assets/js/index.js --dist-dir public/js",
+        "sass-watch": "sass --watch resources/assets/css:public/css --style=compressed",
+        "parcel-build": "parcel build resources/assets/js/index.js --dist-dir public/js",
+        "sass-build": "sass resources/assets/css:public/css --style=compressed",
+        "dev": "concurrently \"yarn parcel-watch\" \"yarn sass-watch\"",
+        "build": "concurrently \"yarn parcel-build\" \"yarn sass-build\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.2",
+        "parcel": "^2.13.3",
+        "sass": "^1.83.4"
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "jquery": "^3.7.1"
+    }
 }

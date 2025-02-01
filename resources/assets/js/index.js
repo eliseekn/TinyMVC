@@ -1,6 +1,5 @@
-import '../../../public/vendor/bootstrap-5.1.1-dist/bootstrap.bundle.min.js'
 import './components/spinner-button'
-import './components/password-toggler'
+import './components/password-toggle'
 import AlertToast from './components/alert-toast'
 
 window.customElements.define('alert-toast', AlertToast)

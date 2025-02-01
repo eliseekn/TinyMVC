@@ -15,7 +15,7 @@
 
 			<div class="mb-3">
 				<label for="name" class="form-label">{{ __('name') }}</label>
-				<input type="text" class="form-control {{ errors.name ? 'is-invalid'  }}" value="{{ inputs.name ?: '' }}" aria-describedby="name-error" name="name" id="name" maxlenght="50" autofocus>
+				<input type="text" class="form-control {{ errors.name ? 'is-invalid'  }}" value="{{ inputs.name ?: '' }}" aria-describedby="name-error" name="name" id="name" maxlength="50" autofocus>
 
 				{% if errors.name is not empty %}
                 <div id="name-error" class="invalid-feedback">
@@ -26,7 +26,7 @@
 
 			<div class="mb-3">
 				<label for="email" class="form-label">{{ __('email') }}</label>
-				<input type="email" id="email" name="email" class="form-control {{ errors.email ? 'is-invalid'  }}" value="{{ inputs.email ?: '' }}" aria-describedby="email-error" maxlenght="50">
+				<input type="email" id="email" name="email" class="form-control {{ errors.email ? 'is-invalid'  }}" value="{{ inputs.email ?: '' }}" aria-describedby="email-error" maxlength="50">
 
 				{% if errors.email is not empty %}
                 <div id="email-error" class="invalid-feedback">
@@ -38,11 +38,14 @@
 			<div class="mb-3">
 				<label for="password" class="form-label">{{ __('password') }}</label>
 
-				<div class="d-flex align-items-center">
-					<input type="password" id="password" name="password" class="form-control {{ errors.password ? 'is-invalid'  }}" value="{{ inputs.password ?: '' }}" aria-describedby="password-error" maxlenght="50">
+				<div class="input-group">
+					<input type="password" id="password" name="password" class="form-control {{ errors.password ? 'is-invalid'  }}" value="{{ inputs.password ?: '' }}" aria-describedby="password-error" maxlength="50">
 
-					<span class="btn" id="password-toggler" title="Toggle display">
-						<i class="fa fa-eye-slash"></i>
+					<span class="input-group-text" id="password-toggle" title="Toggle display" style="cursor: pointer">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+						  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+						  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+						</svg>
 					</span>
 				</div>
 
