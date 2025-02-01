@@ -49,7 +49,7 @@ return [
 
         new Core\Console\ClearTwigCache(),
         new Core\Console\Server(),
-        new Core\Console\Tests(),
+        new Core\Console\Test(),
         new Core\Console\ClearLogs(),
         new Core\Console\Routes(),
         new Core\Console\Shell(),

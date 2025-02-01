@@ -15,7 +15,7 @@ use Symfony\Component\Process\Process;
 /**
  * Run PHPUnit tests cases.
  */
-class Tests extends Command
+class Test extends Command
 {
     protected static $defaultName = 'test';
 

@@ -232,8 +232,9 @@ class Route
         return array_combine($array_keys, self::$tmp_routes);
     }
 
-    public static function getRoutes(): array
+    public static function getAll(): array
     {
+        self::load();
         return self::$routes;
     }
 

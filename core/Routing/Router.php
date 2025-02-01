@@ -84,7 +84,7 @@ class Router
     {
         $request = new Request();
         $response = new Response();
-        $routes = Route::getRoutes();
+        $routes = Route::getAll();
 
         if (empty($routes)) {
             throw new RoutesNotDefinedException();
